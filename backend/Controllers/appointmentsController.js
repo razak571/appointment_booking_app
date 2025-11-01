@@ -85,6 +85,7 @@ const createAppointments = async (req, res) => {
     }
 
     const now = new Date();
+    //past slot validation
     // if (start.getTime() <= now.getTime()) {
     //   return res
     //     .status(400)
