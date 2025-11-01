@@ -117,9 +117,44 @@ Make sure to set environment variables in Postman:
 
 ---
 
+## 🧪 Important Testing Notes:
+
+The app prevents booking of past time slots as per business logic.
+
+`if (start.getTime() <= now.getTime()) {
+  return res.status(400).json({ success: false, message: "Cannot book past slots" });
+}`
+
+- Since today is a weekend (Saturday/Sunday), the backend blocks new bookings (Mon–Fri only).
+  For testing during weekends, you can temporarily comment out the above validation or test on a Monday onwards, when new week slots automatically appear.
+
+`Alternative Option for Reviewers:`
+
+If you’d like to test bookings on a weekend, simply:
+
+- Open /Controllers/appointmentsController.js
+
+- Comment out the “past slots” check temporarily (already marked in code)
+
+- Restart the backend (or use deployed version with test mode)
+
+---
+
 ## 🌐 Deployment
 
-Both frontend and backend are deployed on **Render**.
+`⚙️ Deployment Info`
+
+Frontend (Render):
+🔗 https://appointmentapp-server.onrender.com
+
+Backend (Render):
+🔗 https://appointmentapp-ova0.onrender.com
+
+⚠️ Note: Both apps are hosted on Render’s free tier.
+
+Render automatically spins down the service after inactivity. First load may take 50–60 seconds to start. Subsequent requests are instant.
+
+💻 GitHub Repository 🔗 https://github.com/razak571/appointment_booking_app
 
 ---
 

@@ -85,11 +85,11 @@ const createAppointments = async (req, res) => {
     }
 
     const now = new Date();
-    // if (start.getTime() <= now.getTime()) {
-    //   return res
-    //     .status(400)
-    //     .json({ success: false, message: "Cannot book past slots" });
-    // }
+    if (start.getTime() <= now.getTime()) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Cannot book past slots" });
+    }
 
     const day = start.getDay(); // 0 Sun .. 6 Sat
     if (day === 0 || day === 6) {
