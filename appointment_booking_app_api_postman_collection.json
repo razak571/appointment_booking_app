@@ -1,0 +1,146 @@
+{
+	"info": {
+		"_postman_id": "25d21403-802d-4c79-90c1-8644949917c0",
+		"name": "appointment-booking-app",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "35193318"
+	},
+	"item": [
+		{
+			"name": "bookedAppointments",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"tasks\": [\r\n    {\r\n      \"id\": \"66e0663c69ade7ac70fbd6a3\",\r\n      \"status\": \"In Progress\"\r\n    },\r\n    {\r\n      \"id\": \"66dfac7269ade7ac70fbd696\",\r\n      \"status\": \"Done\"\r\n    },\r\n    {\r\n      \"id\": \"66dfac9d69ade7ac70fbd698\",\r\n      \"status\": \"In Progress\"\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/appointments",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"appointments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "createAppointments",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Parse JSON response\r",
+							"const res = pm.response.json();\r",
+							"\r",
+							"// Check if success\r",
+							"if (res.success && res.data && res.data._id) {\r",
+							"    // Save appointmentId in environment variable\r",
+							"    pm.environment.set(\"appointmentId\", res.data._id);\r",
+							"    console.log(\"✅ Appointment ID saved:\", res.data._id);\r",
+							"} else {\r",
+							"    console.log(\"❌ Could not extract ID\");\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"startDateTime\": \"{{slot}}\",\r\n        \"name\": \"razak\",\r\n        \"email\": \"12ar@gmail.com\",\r\n        \"phone\": \"87669\"\r\n        // reason,\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/api/appointments",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"appointments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "availableAppoinments",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"tasks\": [\r\n    {\r\n      \"id\": \"66e0663c69ade7ac70fbd6a3\",\r\n      \"status\": \"In Progress\"\r\n    },\r\n    {\r\n      \"id\": \"66dfac7269ade7ac70fbd696\",\r\n      \"status\": \"Done\"\r\n    },\r\n    {\r\n      \"id\": \"66dfac9d69ade7ac70fbd698\",\r\n      \"status\": \"In Progress\"\r\n    }\r\n  ]\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:4000/api/appointments/available",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"appointments",
+						"available"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteAppointment",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"tasks\": [\r\n    {\r\n      \"id\": \"66e0663c69ade7ac70fbd6a3\",\r\n      \"status\": \"In Progress\"\r\n    },\r\n    {\r\n      \"id\": \"66dfac7269ade7ac70fbd696\",\r\n      \"status\": \"Done\"\r\n    },\r\n    {\r\n      \"id\": \"66dfac9d69ade7ac70fbd698\",\r\n      \"status\": \"In Progress\"\r\n    }\r\n  ]\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:4000/api/appointments/{{appointmentId}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"appointments",
+						"{{appointmentId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
