@@ -42,11 +42,16 @@ function BookingForm({ defaultStart, onDone, onCancel }) {
       setMessage({ type: "error", text: err?.message || "Failed to book" });
     }
   }
+  console.log("DefaultStart:", defaultStart);
+  console.log(
+    "IST Converted:",
+    new Date(new Date(defaultStart).getTime() + 5.5 * 60 * 60 * 1000)
+  );
 
   return (
     <div style={{ marginTop: 16, border: "1px solid #ccc", padding: 12 }}>
       {/* <h3>Book {new Date(defaultStart).toLocaleString()}</h3> */}
-      <h3>
+      {/* <h3>
         Book{" "}
         {new Date(defaultStart).toLocaleString("en-IN", {
           timeZone: "Asia/Kolkata",
@@ -57,7 +62,46 @@ function BookingForm({ defaultStart, onDone, onCancel }) {
           month: "2-digit",
           year: "numeric",
         })}
+      </h3> */}
+      {/* <h3>
+        Book{" "}
+        {(() => {
+          const d = new Date(defaultStart);
+          // convert UTC → IST manually (add 5h 30m)
+          const ist = new Date(d.getTime() + 5.5 * 60 * 60 * 1000);
+          return ist.toLocaleString("en-IN", {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: true,
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+          });
+        })()}
+      </h3> */}
+
+      <h3>
+        Book{" "}
+        {(() => {
+          const d = new Date(defaultStart);
+          const localOffset = d.getTimezoneOffset(); // in minutes
+          // If system not in IST (offset != -330), adjust manually
+          const adjusted =
+            localOffset === -330
+              ? d // already IST system
+              : new Date(d.getTime() + 5.5 * 60 * 60 * 1000);
+          return adjusted.toLocaleString("en-IN", {
+            timeZone: "Asia/Kolkata",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: true,
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+          });
+        })()}
       </h3>
+
       <form onSubmit={submit}>
         <div>
           <label>Name*</label>
