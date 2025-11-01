@@ -37,7 +37,13 @@ function generateWeekSlots(weekStartISO) {
         slots.push({
           start: s.toISOString(),
           date: s.toISOString().split("T")[0],
-          time: s.toTimeString().slice(0, 5),
+          // time: s.toTimeString().slice(0, 5),
+          time: s.toLocaleTimeString("en-IN", {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false,
+            timeZone: "Asia/Kolkata",
+          }),
         });
       }
     }
