@@ -45,7 +45,19 @@ function BookingForm({ defaultStart, onDone, onCancel }) {
 
   return (
     <div style={{ marginTop: 16, border: "1px solid #ccc", padding: 12 }}>
-      <h3>Book {new Date(defaultStart).toLocaleString()}</h3>
+      {/* <h3>Book {new Date(defaultStart).toLocaleString()}</h3> */}
+      <h3>
+        Book{" "}
+        {new Date(defaultStart).toLocaleString("en-IN", {
+          timeZone: "Asia/Kolkata",
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: true,
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+        })}
+      </h3>
       <form onSubmit={submit}>
         <div>
           <label>Name*</label>
