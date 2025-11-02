@@ -5,7 +5,7 @@ import BookingForm from "./BookingForm";
 function CalendarWeek({ refreshFlag, setRefreshFlag }) {
   const [slots, setSlots] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedSlot, setSelectedSlot] = useState(null); // ISO string
+  const [selectedSlot, setSelectedSlot] = useState(null); // ISO string (was, but now it is an object with date and time directly to prevent offset mismatch)
 
   useEffect(() => {
     load();
@@ -14,7 +14,6 @@ function CalendarWeek({ refreshFlag, setRefreshFlag }) {
   async function load() {
     setLoading(true);
     const res = await getAvailable();
-    // console.log(res);
     if (res.success) setSlots(res.data);
     setLoading(false);
   }
@@ -42,7 +41,10 @@ function CalendarWeek({ refreshFlag, setRefreshFlag }) {
                 <div key={s.start} style={{ marginBottom: 6 }}>
                   <button
                     disabled={!s.available}
-                    onClick={() => setSelectedSlot(s.start)}
+                    onClick={
+                      () => setSelectedSlot({ date: s.date, time: s.time })
+                      // setSelectedSlot(s.start)
+                    }
                     style={{
                       width: "100%",
                       padding: 6,

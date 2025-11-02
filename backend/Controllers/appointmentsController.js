@@ -22,14 +22,11 @@ const bookedAppointments = async (req, res) => {
 const availableAppointments = async (req, res) => {
   try {
     const weekStart = req.query.weekStart; // optional ISO
-    // console.log(weekStart);
     const slots = generateWeekSlots(weekStart);
 
     // fetch appointments in that week range to mark booked
     const startISO = new Date(slots[0].start).toISOString();
-    // console.log("startISO : : ", startISO);
     const endISO = new Date(slots[slots.length - 1].start);
-    // console.log("endISO : : ", endISO);
     endISO.setMinutes(endISO.getMinutes() + 30); // end after last slot
     const appts = await appointmentModel
       .find({
@@ -41,14 +38,10 @@ const availableAppointments = async (req, res) => {
       appts.map((a) => new Date(a.startDateTime).toISOString())
     );
 
-    // console.log("bookedSet : :", bookedSet);
-
     const annotated = slots.map((s) => ({
       ...s,
       available: !bookedSet.has(new Date(s.start).toISOString()),
     }));
-
-    // console.log("annotated : ;", annotated);
 
     res.json({ success: true, data: annotated });
   } catch (err) {
@@ -77,7 +70,14 @@ const createAppointments = async (req, res) => {
         .json({ success: false, message: "Reason must be <= 200 characters" });
     }
 
-    const start = new Date(startDateTime);
+    // const start = new Date(startDateTime);
+
+    const start = new Date(
+      `${startDateTime.date}T${startDateTime.time}:00+05:30`
+    ); // reconstrcting ISO string manually
+
+    // 2025-11-03T09:00:00Z  =>  2025-11-03T03:30:00Z
+
     if (isNaN(start.getTime())) {
       return res
         .status(400)
@@ -86,11 +86,11 @@ const createAppointments = async (req, res) => {
 
     const now = new Date();
     //past slot validation
-    if (start.getTime() <= now.getTime()) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Cannot book past slots" });
-    }
+    // if (start.getTime() <= now.getTime()) {
+    //   return res
+    //     .status(400)
+    //     .json({ success: false, message: "Cannot book past slots" });
+    // }
 
     const day = start.getDay(); // 0 Sun .. 6 Sat
     if (day === 0 || day === 6) {

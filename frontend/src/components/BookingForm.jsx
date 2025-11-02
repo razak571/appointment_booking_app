@@ -42,14 +42,13 @@ function BookingForm({ defaultStart, onDone, onCancel }) {
       setMessage({ type: "error", text: err?.message || "Failed to book" });
     }
   }
-  console.log("DefaultStart:", defaultStart);
-  console.log(
-    "IST Converted:",
-    new Date(new Date(defaultStart).getTime() + 5.5 * 60 * 60 * 1000)
-  );
 
   return (
     <div style={{ marginTop: 16, border: "1px solid #ccc", padding: 12 }}>
+      <h3>
+        Book {defaultStart.date} {defaultStart.time}
+      </h3>
+
       {/* <h3>Book {new Date(defaultStart).toLocaleString()}</h3> */}
       {/* <h3>
         Book{" "}
@@ -80,7 +79,7 @@ function BookingForm({ defaultStart, onDone, onCancel }) {
         })()}
       </h3> */}
 
-      <h3>
+      {/* <h3>
         Book{" "}
         {(() => {
           const d = new Date(defaultStart);
@@ -100,7 +99,7 @@ function BookingForm({ defaultStart, onDone, onCancel }) {
             year: "numeric",
           });
         })()}
-      </h3>
+      </h3> */}
 
       <form onSubmit={submit}>
         <div>
