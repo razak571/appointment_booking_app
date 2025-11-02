@@ -45,9 +45,9 @@ function BookingForm({ defaultStart, onDone, onCancel }) {
 
   return (
     <div style={{ marginTop: 16, border: "1px solid #ccc", padding: 12 }}>
-      <h3>
+      {/* <h3>
         Book {defaultStart.date} {defaultStart.time}
-      </h3>
+      </h3> */}
 
       {/* <h3>Book {new Date(defaultStart).toLocaleString()}</h3> */}
       {/* <h3>
@@ -79,7 +79,7 @@ function BookingForm({ defaultStart, onDone, onCancel }) {
         })()}
       </h3> */}
 
-      {/* <h3>
+      <h3>
         Book{" "}
         {(() => {
           const d = new Date(defaultStart);
@@ -99,7 +99,7 @@ function BookingForm({ defaultStart, onDone, onCancel }) {
             year: "numeric",
           });
         })()}
-      </h3> */}
+      </h3>
 
       <form onSubmit={submit}>
         <div>

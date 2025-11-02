@@ -42,8 +42,8 @@ function CalendarWeek({ refreshFlag, setRefreshFlag }) {
                   <button
                     disabled={!s.available}
                     onClick={
-                      () => setSelectedSlot({ date: s.date, time: s.time })
-                      // setSelectedSlot(s.start)
+                      // () => setSelectedSlot({ date: s.date, time: s.time })
+                      () => setSelectedSlot(s.start)
                     }
                     style={{
                       width: "100%",

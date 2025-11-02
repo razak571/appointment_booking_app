@@ -70,11 +70,11 @@ const createAppointments = async (req, res) => {
         .json({ success: false, message: "Reason must be <= 200 characters" });
     }
 
-    // const start = new Date(startDateTime);
+    const start = new Date(startDateTime);
 
-    const start = new Date(
-      `${startDateTime.date}T${startDateTime.time}:00+05:30`
-    ); // reconstrcting ISO string manually
+    // const start = new Date(
+    //   `${startDateTime.date}T${startDateTime.time}:00+05:30`
+    // ); // reconstrcting ISO string manually
 
     // 2025-11-03T09:00:00Z  =>  2025-11-03T03:30:00Z
 
@@ -86,11 +86,11 @@ const createAppointments = async (req, res) => {
 
     const now = new Date();
     //past slot validation
-    // if (start.getTime() <= now.getTime()) {
-    //   return res
-    //     .status(400)
-    //     .json({ success: false, message: "Cannot book past slots" });
-    // }
+    if (start.getTime() <= now.getTime()) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Cannot book past slots" });
+    }
 
     const day = start.getDay(); // 0 Sun .. 6 Sat
     if (day === 0 || day === 6) {
