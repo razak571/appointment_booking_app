@@ -145,10 +145,10 @@ If you’d like to test bookings on a weekend, simply:
 `⚙️ Deployment Info`
 
 Frontend (Render):
-🔗 https://appointmentapp-server.onrender.com
+🔗 https://appointmentapp-ova0.onrender.com
 
 Backend (Render):
-🔗 https://appointmentapp-ova0.onrender.com
+🔗 https://appointmentapp-server.onrender.com
 
 ⚠️ Note: Both apps are hosted on Render’s free tier.
 
