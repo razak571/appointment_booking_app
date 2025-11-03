@@ -5,7 +5,7 @@ import BookingForm from "./BookingForm";
 function CalendarWeek({ refreshFlag, setRefreshFlag }) {
   const [slots, setSlots] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedSlot, setSelectedSlot] = useState(null); // ISO string (was, but now it is an object with date and time directly to prevent offset mismatch)
+  const [selectedSlot, setSelectedSlot] = useState(null);
 
   useEffect(() => {
     load();
@@ -38,12 +38,15 @@ function CalendarWeek({ refreshFlag, setRefreshFlag }) {
             >
               <h4>{date}</h4>
               {grouped[date].map((s) => (
-                <div key={s.start} style={{ marginBottom: 6 }}>
+                <div key={`${s.date}-${s.time}`} style={{ marginBottom: 6 }}>
                   <button
                     disabled={!s.available}
-                    onClick={
-                      // () => setSelectedSlot({ date: s.date, time: s.time })
-                      () => setSelectedSlot(s.start)
+                    onClick={() =>
+                      setSelectedSlot({
+                        iso: s.start, // original ISO from backend (for reference if needed)
+                        date: s.date, // YYYY-MM-DD (backend supplied)
+                        time: s.time, // "HH:MM" (backend supplied)
+                      })
                     }
                     style={{
                       width: "100%",
@@ -65,8 +68,9 @@ function CalendarWeek({ refreshFlag, setRefreshFlag }) {
       {selectedSlot && (
         <BookingForm
           defaultStart={selectedSlot}
-          onDone={() => {
+          onDone={async () => {
             setSelectedSlot(null);
+            await new Promise((r) => setTimeout(r, 300)); // slight delay for DB update to reflect
             load();
             setRefreshFlag((p) => p + 1);
           }}

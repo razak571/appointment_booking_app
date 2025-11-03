@@ -24,8 +24,14 @@ function BookingForm({ defaultStart, onDone, onCancel }) {
 
     setLoading(true);
     try {
+      // construct ISO with explicit IST offset (+05:30)
+
+      // This ensures backend receives correct IST time regardless of client timezone.
+
+      const startISO = `${defaultStart.date}T${defaultStart.time}:00+05:30`;
+
       await createAppointment({
-        startDateTime: defaultStart,
+        startDateTime: startISO,
         name,
         email,
         phone,
@@ -45,60 +51,8 @@ function BookingForm({ defaultStart, onDone, onCancel }) {
 
   return (
     <div style={{ marginTop: 16, border: "1px solid #ccc", padding: 12 }}>
-      {/* <h3>
-        Book {defaultStart.date} {defaultStart.time}
-      </h3> */}
-
-      {/* <h3>Book {new Date(defaultStart).toLocaleString()}</h3> */}
-      {/* <h3>
-        Book{" "}
-        {new Date(defaultStart).toLocaleString("en-IN", {
-          timeZone: "Asia/Kolkata",
-          hour: "2-digit",
-          minute: "2-digit",
-          hour12: true,
-          day: "2-digit",
-          month: "2-digit",
-          year: "numeric",
-        })}
-      </h3> */}
-      {/* <h3>
-        Book{" "}
-        {(() => {
-          const d = new Date(defaultStart);
-          // convert UTC → IST manually (add 5h 30m)
-          const ist = new Date(d.getTime() + 5.5 * 60 * 60 * 1000);
-          return ist.toLocaleString("en-IN", {
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: true,
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric",
-          });
-        })()}
-      </h3> */}
-
       <h3>
-        Book{" "}
-        {(() => {
-          const d = new Date(defaultStart);
-          const localOffset = d.getTimezoneOffset(); // in minutes
-          // If system not in IST (offset != -330), adjust manually
-          const adjusted =
-            localOffset === -330
-              ? d // already IST system
-              : new Date(d.getTime() + 5.5 * 60 * 60 * 1000);
-          return adjusted.toLocaleString("en-IN", {
-            timeZone: "Asia/Kolkata",
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: true,
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric",
-          });
-        })()}
+        Book {defaultStart.date} {defaultStart.time}
       </h3>
 
       <form onSubmit={submit}>

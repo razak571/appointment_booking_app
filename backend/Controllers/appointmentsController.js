@@ -34,14 +34,22 @@ const availableAppointments = async (req, res) => {
       })
       .lean();
 
-    const bookedSet = new Set(
-      appts.map((a) => new Date(a.startDateTime).toISOString())
-    );
+    // Helper to convert any Date → "YYYY-MM-DD HH:MM" in IST (so local vs UTC won't matter)
+    function toISTKey(date) {
+      const d = new Date(date);
 
-    const annotated = slots.map((s) => ({
-      ...s,
-      available: !bookedSet.has(new Date(s.start).toISOString()),
-    }));
+      const ist = new Date(d.getTime() + 5.5 * 60 * 60 * 1000); // convert UTC→IST
+
+      return ist.toISOString().slice(0, 16); // up to minutes
+    }
+
+    const bookedSet = new Set(appts.map((a) => toISTKey(a.startDateTime)));
+
+    const annotated = slots.map((s) => {
+      const key = toISTKey(s.start);
+
+      return { ...s, available: !bookedSet.has(key) };
+    });
 
     res.json({ success: true, data: annotated });
   } catch (err) {
@@ -71,12 +79,6 @@ const createAppointments = async (req, res) => {
     }
 
     const start = new Date(startDateTime);
-
-    // const start = new Date(
-    //   `${startDateTime.date}T${startDateTime.time}:00+05:30`
-    // ); // reconstrcting ISO string manually
-
-    // 2025-11-03T09:00:00Z  =>  2025-11-03T03:30:00Z
 
     if (isNaN(start.getTime())) {
       return res

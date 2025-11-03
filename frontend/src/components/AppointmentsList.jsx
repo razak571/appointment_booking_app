@@ -35,19 +35,11 @@ export default function AppointmentsList({ refreshFlag, setRefreshFlag }) {
         <tbody>
           {items.map((a) => (
             <tr key={a._id}>
-              <td>{new Date(a.startDateTime).toLocaleString()}</td>
-              {/* <td>
+              <td>
                 {new Date(a.startDateTime).toLocaleString("en-IN", {
                   timeZone: "Asia/Kolkata",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  hour12: true,
-                  day: "2-digit",
-                  month: "2-digit",
-                  year: "numeric",
                 })}
-              </td> */}
-
+              </td>
               <td>{a.name}</td>
               <td>{a.reason || "-"}</td>
               <td>
