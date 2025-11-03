@@ -100,12 +100,14 @@ const createAppointments = async (req, res) => {
         .status(400)
         .json({ success: false, message: "Bookings allowed only Mon-Fri" });
     }
-    const hour = start.getHours();
-    const minute = start.getMinutes();
+    // convert all checks in UTC (Render runs in UTC)
+    const hour = start.getUTCHours();
+    const minute = start.getUTCMinutes();
     if (
-      hour < 9 ||
-      hour > 16 ||
-      (hour === 16 && minute > 30) ||
+      hour < 3 ||
+      hour > 11 ||
+      (hour === 3 && minute < 30) ||
+      (hour === 11 && minute > 0) ||
       (minute !== 0 && minute !== 30)
     ) {
       return res.status(400).json({
